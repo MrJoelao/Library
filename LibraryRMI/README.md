@@ -1,54 +1,55 @@
-# Sistema Biblioteca RMI
+# Sistema Biblioteca con Java RMI e Web Interface
 
-Un'applicazione distribuita Java per la gestione di una biblioteca, che utilizza Java RMI per la comunicazione client-server.
+Questo progetto implementa un sistema di gestione biblioteca utilizzando Java RMI per il backend e un'interfaccia web realizzata con Spring Boot e HTML/CSS/JavaScript per il frontend.
 
 ## Struttura del Progetto
 
-- `model/` - Contiene le classi del modello dati
-- `rmi/` - Contiene l'interfaccia e l'implementazione del servizio RMI
-- `server/` - Contiene il server RMI
-- `client/` - Contiene il client di test
-- `resources/static/` - Contiene i file per l'interfaccia web (HTML, CSS, JS)
+Il progetto è diviso in due moduli principali:
+
+- `rmi-server`: Contiene l'implementazione del server RMI che gestisce la logica della biblioteca
+- `web-client`: Contiene l'interfaccia web che si connette al server RMI tramite REST API
 
 ## Requisiti
 
 - Java 11 o superiore
 - Gradle
 
-## Compilazione
+## Come Eseguire
 
-```bash
-./gradlew build
-```
+1. Avviare il Server RMI:
+   ```bash
+   cd LibraryRMI/rmi-server
+   ./gradlew runServer
+   ```
 
-## Esecuzione
+2. Avviare l'Interfaccia Web:
+   ```bash
+   cd LibraryRMI/web-client
+   ./gradlew bootRun
+   ```
 
-1. Avviare il server:
-```bash
-./gradlew runServer
-```
-
-2. In un altro terminale, avviare il client di test:
-```bash
-./gradlew runClient
-```
+3. Aprire il browser e navigare a:
+   ```
+   http://localhost:8080
+   ```
 
 ## Funzionalità
 
-- Visualizzazione lista libri
+- Visualizzazione di tutti i libri disponibili
 - Ricerca libri per titolo o autore
-- Prenotazione libri
-- Restituzione libri
+- Prenotazione di un libro
+- Restituzione di un libro
 
-## Struttura RMI
+## API REST
 
-- Il server RMI viene avviato sulla porta 1099 (default)
-- Il client si connette al server tramite l'interfaccia `LibraryService`
-- La comunicazione è gestita tramite Java RMI
+L'interfaccia web comunica con il server RMI attraverso le seguenti API REST:
 
-## Sviluppi Futuri
+- `GET /api/books`: Recupera tutti i libri
+- `GET /api/books/{id}`: Recupera un libro specifico
+- `GET /api/books/search?query=`: Cerca libri per titolo o autore
+- `POST /api/books/{id}/reserve`: Prenota un libro
+- `POST /api/books/{id}/return`: Restituisce un libro
 
-- Implementazione dell'interfaccia web
-- Aggiunta del sistema di autenticazione
-- Gestione delle categorie dei libri
-- Sistema di notifiche per le prenotazioni
+## Note di Sicurezza
+
+Il file `security.policy` è configurato per consentire le operazioni RMI necessarie. In un ambiente di produzione, configurare le policy di sicurezza in modo appropriato.
