@@ -1,41 +1,290 @@
-body {
-    background-color: #f8f9fa;
+:root {
+    --primary-color: #1a4f70;
+    --secondary-color: #2c3e50;
+    --accent-color: #3498db;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --light-bg: #f5f6fa;
+    --text-color: #2d3436;
 }
 
-.container {
+body {
+    background-color: var(--light-bg);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--primary-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    color: white !important;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.navbar-brand i {
+    color: #ffd700;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 4rem 0;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.hero-section .lead {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+/* Search Container */
+.search-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-container .input-group {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-container .form-control {
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    border-radius: 8px 0 0 8px;
+}
+
+.search-container .btn-primary {
+    background-color: var(--accent-color);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    border-radius: 0 8px 8px 0;
+}
+
+/* Main Container */
+.main-container {
     background-color: white;
-    border-radius: 8px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    flex: 1;
+}
+
+/* Table Styles */
+.table {
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table thead th {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 1.25rem 1rem;
+    font-weight: 500;
+}
+
+.table thead th:first-child {
+    border-radius: 8px 0 0 0;
+}
+
+.table thead th:last-child {
+    border-radius: 0 8px 0 0;
+}
+
+.table tbody td {
+    padding: 1.25rem 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(236, 240, 241, 0.5);
+}
+
+/* Book Details */
+.book-cover {
+    width: 60px;
+    height: 90px;
+    background-color: var(--light-bg);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.table {
-    margin-bottom: 0;
+.book-cover i {
+    font-size: 2rem;
+    color: var(--primary-color);
 }
 
-.table th {
-    background-color: #f8f9fa;
+.book-title {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem;
 }
 
-.btn-action {
-    margin-right: 5px;
+.book-author {
+    color: #666;
+    font-size: 0.9rem;
 }
 
+/* Status Badges */
 .status-available {
-    color: #28a745;
-    font-weight: bold;
+    color: var(--success-color);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .status-unavailable {
-    color: #dc3545;
-    font-weight: bold;
+    color: var(--danger-color);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
+/* Action Buttons */
+.btn-action {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    border: none;
+}
+
+.btn-warning {
+    background-color: var(--warning-color);
+    border: none;
+}
+
+/* Toast Notifications */
+.toast-container {
+    z-index: 1050;
+}
+
+.toast {
+    background: white;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.toast-header {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 8px 8px 0 0;
+}
+
+.toast-header .btn-close {
+    filter: brightness(0) invert(1);
+}
+
+/* Footer */
+.footer {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 2rem 0;
+    margin-top: auto;
+}
+
+.footer span {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Loading Animation */
+.loading {
+    position: relative;
+    opacity: 0.7;
+}
+
+.loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2rem;
+    height: 2rem;
+    margin: -1rem 0 0 -1rem;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-    .container {
-        padding: 10px;
+    .hero-section {
+        padding: 2rem 0;
+    }
+
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+
+    .search-container {
+        padding: 1rem;
+    }
+
+    .main-container {
+        padding: 1rem;
     }
     
     .table td, .table th {
-        padding: 8px;
+        padding: 0.75rem;
+    }
+    
+    .btn-action {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .book-cover {
+        width: 50px;
+        height: 75px;
     }
 }
