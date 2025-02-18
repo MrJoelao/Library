@@ -1,0 +1,41 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    background-color: #f8f9fa;
+}
+
+.btn-action {
+    margin-right: 5px;
+}
+
+.status-available {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.status-unavailable {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .table td, .table th {
+        padding: 8px;
+    }
+}
