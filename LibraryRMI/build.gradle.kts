@@ -1,58 +1,54 @@
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    version = "1.0-SNAPSHOT"
+
+    if (project.name == "rmi-server") {
+        apply(plugin = "java")
+        apply(plugin = "application")
+
+        configure<JavaPluginExtension> {
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
+        }
+
+        dependencies {
+            "testImplementation"("org.junit.jupiter:junit-jupiter:5.9.2")
+        }
+
+        tasks.named<Test>("test") {
+            useJUnitPlatform()
+        }
+    }
+
+    if (project.name == "web-client") {
+        apply(plugin = "java")
+        apply(plugin = "org.springframework.boot")
+        apply(plugin = "io.spring.dependency-management")
+
+        configure<JavaPluginExtension> {
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
+        }
+
+        dependencies {
+            "implementation"("org.springframework.boot:spring-boot-starter-web")
+            "implementation"("org.springframework.boot:spring-boot-starter-thymeleaf")
+            "testImplementation"("org.springframework.boot:spring-boot-starter-test")
+        }
+
+        tasks.named<Test>("test") {
+            useJUnitPlatform()
+        }
+    }
+}
+
 plugins {
     java
-    application
-}
-
-group = "library"
-version = "1.0-SNAPSHOT"
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
-}
-
-tasks.compileJava {
-    options.release.set(11)
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-
-application {
-    mainClass.set("server.LibraryServer")
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-    modularity.inferModulePath.set(true)
-}
-
-tasks.register<JavaExec>("runServer") {
-    group = "application"
-    mainClass.set("server.LibraryServer")
-    classpath = sourceSets["main"].runtimeClasspath
-    jvmArgs = listOf(
-        "-Djava.security.policy=security.policy",
-        "-Djava.rmi.server.codebase=file:${projectDir}/build/classes/java/main/"
-    )
-}
-
-tasks.register<JavaExec>("runClient") {
-    group = "application"
-    mainClass.set("client.LibraryClient")
-    classpath = sourceSets["main"].runtimeClasspath
-    jvmArgs = listOf(
-        "-Djava.security.policy=security.policy"
-    )
-}
-
-tasks.jar {
-    manifest {
-        attributes["Main-Class"] = "server.LibraryServer"
-    }
+    id("org.springframework.boot") version "2.7.8" apply false
+    id("io.spring.dependency-management") version "1.0.15.RELEASE" apply false
 }

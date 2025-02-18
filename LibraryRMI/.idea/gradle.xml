@@ -9,6 +9,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/rmi-server" />
+            <option value="$PROJECT_DIR$/web-client" />
           </set>
         </option>
       </GradleProjectSettings>
