@@ -1,6 +1,8 @@
 plugins {
     java
     application
+    id("org.springframework.boot") version "2.7.8"
+    id("io.spring.dependency-management") version "1.0.15.RELEASE"
 }
 
 group = "com.library.rmi"
@@ -11,7 +13,9 @@ repositories {
 }
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 java {
