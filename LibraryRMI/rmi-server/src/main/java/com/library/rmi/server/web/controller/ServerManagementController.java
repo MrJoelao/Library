@@ -1,14 +1,17 @@
 package com.library.rmi.server.web.controller;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/server")
@@ -35,8 +38,8 @@ public class ServerManagementController {
 
         try {
             String projectRoot = System.getProperty("user.dir");
-            String classpath = projectRoot + "\\rmi-server\\build\\classes\\java\\main;" +
-                             projectRoot + "\\rmi-server\\build\\resources\\main";
+            String classpath = projectRoot + "/rmi-server/build/classes/java/main:" +
+                             projectRoot + "/rmi-server/build/resources/main";
 
             ProcessBuilder processBuilder = new ProcessBuilder(
                 "java", "-cp", classpath,
