@@ -1,4 +1,5 @@
 rootProject.name = "library-system"
 
-include("rmi-server")
-include("web-client")
+include("client")
+include("server")
+include("common")
