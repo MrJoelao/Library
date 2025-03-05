@@ -12,6 +12,9 @@
 </head>
 <body data-theme="light">
     <canvas id="particles" class="particles"></canvas>
+    <button type="button" class="theme-toggle top-right" onclick="openThemeModal()">
+        <i class="material-icons">palette</i>
+    </button>
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
@@ -126,16 +129,128 @@
             </form>
         </div>
     </div>
+    <!-- Theme Selection Modal -->
+    <div class="theme-modal" id="themeModal">
+        <div class="theme-modal-content">
+            <div class="theme-modal-header">
+                <h2>Seleziona Tema</h2>
+                <button class="btn-close" onclick="closeThemeModal()"></button>
+            </div>
+            <div class="theme-grid">
+                <div class="theme-item" data-preview="light" onclick="previewTheme('light')">
+                    <div class="theme-preview"></div>
+                    <span class="material-icons">light_mode</span>
+                    <span>Chiaro</span>
+                </div>
+                <div class="theme-item" data-preview="deep-dark" onclick="previewTheme('deep-dark')">
+                    <div class="theme-preview"></div>
+                    <span class="material-icons">nightlight</span>
+                    <span>Deep Dark</span>
+                </div>
+                <div class="theme-item" data-preview="midnight-blue" onclick="previewTheme('midnight-blue')">
+                    <div class="theme-preview"></div>
+                    <span class="material-icons">bedtime</span>
+                    <span>Midnight</span>
+                </div>
+                <div class="theme-item" data-preview="forest-night" onclick="previewTheme('forest-night')">
+                    <div class="theme-preview"></div>
+                    <span class="material-icons">forest</span>
+                    <span>Forest</span>
+                </div>
+                <div class="theme-item" data-preview="cyberpunk" onclick="previewTheme('cyberpunk')">
+                    <div class="theme-preview"></div>
+                    <span class="material-icons">blur_on</span>
+                    <span>Cyber</span>
+                </div>
+                <div class="theme-item" data-preview="sunset" onclick="previewTheme('sunset')">
+                    <div class="theme-preview"></div>
+                    <span class="material-icons">wb_twilight</span>
+                    <span>Sunset</span>
+                </div>
+                <div class="theme-item" data-preview="arctic" onclick="previewTheme('arctic')">
+                    <div class="theme-preview"></div>
+                    <span class="material-icons">ac_unit</span>
+                    <span>Arctic</span>
+                </div>
+                <div class="theme-item" data-preview="desert" onclick="previewTheme('desert')">
+                    <div class="theme-preview"></div>
+                    <span class="material-icons">landscape</span>
+                    <span>Desert</span>
+                </div>
+                <div class="theme-item" data-preview="space" onclick="previewTheme('space')">
+                    <div class="theme-preview"></div>
+                    <span class="material-icons">star</span>
+                    <span>Space</span>
+                </div>
+                <div class="theme-item" data-preview="neon" onclick="previewTheme('neon')">
+                    <div class="theme-preview"></div>
+                    <span class="material-icons">lightbulb</span>
+                    <span>Neon</span>
+                </div>
+                <div class="theme-item" data-preview="retro" onclick="previewTheme('retro')">
+                    <div class="theme-preview"></div>
+                    <span class="material-icons">style</span>
+                    <span>Retro</span>
+                </div>
+            </div>
+            <div class="theme-modal-footer">
+                <button class="btn btn-primary" onclick="applyTheme()">Applica</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Load saved theme
         function setupTheme() {
             const savedTheme = localStorage.getItem('theme') || 'light';
             document.body.setAttribute('data-theme', savedTheme);
+            setActiveTheme(savedTheme);
         }
 
         // Initialize theme on page load
         document.addEventListener('DOMContentLoaded', setupTheme);
+
+        // Theme selection functions
+        let selectedTheme = null;
+
+        function openThemeModal() {
+            const modal = document.getElementById('themeModal');
+            modal.classList.add('show');
+            // Set currently active theme
+            const currentTheme = document.body.getAttribute('data-theme');
+            setActiveTheme(currentTheme);
+            selectedTheme = currentTheme;
+        }
+
+        function closeThemeModal() {
+            const modal = document.getElementById('themeModal');
+            modal.classList.remove('show');
+            // Reset preview to current theme
+            const currentTheme = document.body.getAttribute('data-theme');
+            document.body.setAttribute('data-theme', currentTheme);
+        }
+
+        function previewTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            setActiveTheme(theme);
+            selectedTheme = theme;
+        }
+
+        function setActiveTheme(theme) {
+            document.querySelectorAll('.theme-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('onclick').includes(theme)) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        function applyTheme() {
+            if (selectedTheme) {
+                localStorage.setItem('theme', selectedTheme);
+                closeThemeModal();
+            }
+        }
 
         function toggleForms() {
             const loginForm = document.getElementById('loginForm');
@@ -175,6 +290,10 @@
                     errorMessage.classList.add('show');
                     setTimeout(() => {
                         errorMessage.classList.remove('show');
+                        // Clear the error message content after animation completes
+                        setTimeout(() => {
+                            errorMessage.textContent = '';
+                        }, 300);
                     }, 3000);
                 }
             } catch (error) {
