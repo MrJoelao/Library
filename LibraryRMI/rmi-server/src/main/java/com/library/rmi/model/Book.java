@@ -9,6 +9,7 @@ public class Book implements Serializable {
     private String title;
     private String author;
     private boolean available;
+    private String owner;
 
     public Book() {}
 
@@ -17,6 +18,7 @@ public class Book implements Serializable {
         this.title = title;
         this.author = author;
         this.available = available;
+        this.owner = null;
     }
 
     // Getters and Setters
@@ -50,5 +52,13 @@ public class Book implements Serializable {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 }
