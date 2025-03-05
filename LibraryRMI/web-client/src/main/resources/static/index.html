@@ -38,7 +38,7 @@
                     </a>
                     <ul class="collapse submenu" id="userSettingsSubmenu">
                         <li>
-                            <a href="#" class="nav-link">
+                            <a href="profile.html" class="nav-link">
                                 <span class="material-icons">person</span>
                                 <span>Profilo</span>
                             </a>
@@ -118,47 +118,58 @@
                 <button class="btn-close" onclick="closeThemeModal()"></button>
             </div>
             <div class="theme-grid">
-                <div class="theme-item" onclick="previewTheme('light')">
+                <div class="theme-item" data-preview="light" onclick="previewTheme('light')">
+                    <div class="theme-preview"></div>
                     <span class="material-icons">light_mode</span>
                     <span>Chiaro</span>
                 </div>
-                <div class="theme-item" onclick="previewTheme('deep-dark')">
+                <div class="theme-item" data-preview="deep-dark" onclick="previewTheme('deep-dark')">
+                    <div class="theme-preview"></div>
                     <span class="material-icons">nightlight</span>
                     <span>Deep Dark</span>
                 </div>
-                <div class="theme-item" onclick="previewTheme('midnight-blue')">
+                <div class="theme-item" data-preview="midnight-blue" onclick="previewTheme('midnight-blue')">
+                    <div class="theme-preview"></div>
                     <span class="material-icons">bedtime</span>
                     <span>Midnight</span>
                 </div>
-                <div class="theme-item" onclick="previewTheme('forest-night')">
+                <div class="theme-item" data-preview="forest-night" onclick="previewTheme('forest-night')">
+                    <div class="theme-preview"></div>
                     <span class="material-icons">forest</span>
                     <span>Forest</span>
                 </div>
-                <div class="theme-item" onclick="previewTheme('cyberpunk')">
+                <div class="theme-item" data-preview="cyberpunk" onclick="previewTheme('cyberpunk')">
+                    <div class="theme-preview"></div>
                     <span class="material-icons">blur_on</span>
                     <span>Cyber</span>
                 </div>
-                <div class="theme-item" onclick="previewTheme('sunset')">
+                <div class="theme-item" data-preview="sunset" onclick="previewTheme('sunset')">
+                    <div class="theme-preview"></div>
                     <span class="material-icons">wb_twilight</span>
                     <span>Sunset</span>
                 </div>
-                <div class="theme-item" onclick="previewTheme('arctic')">
+                <div class="theme-item" data-preview="arctic" onclick="previewTheme('arctic')">
+                    <div class="theme-preview"></div>
                     <span class="material-icons">ac_unit</span>
                     <span>Arctic</span>
                 </div>
-                <div class="theme-item" onclick="previewTheme('desert')">
+                <div class="theme-item" data-preview="desert" onclick="previewTheme('desert')">
+                    <div class="theme-preview"></div>
                     <span class="material-icons">landscape</span>
                     <span>Desert</span>
                 </div>
-                <div class="theme-item" onclick="previewTheme('space')">
+                <div class="theme-item" data-preview="space" onclick="previewTheme('space')">
+                    <div class="theme-preview"></div>
                     <span class="material-icons">star</span>
                     <span>Space</span>
                 </div>
-                <div class="theme-item" onclick="previewTheme('neon')">
+                <div class="theme-item" data-preview="neon" onclick="previewTheme('neon')">
+                    <div class="theme-preview"></div>
                     <span class="material-icons">lightbulb</span>
                     <span>Neon</span>
                 </div>
-                <div class="theme-item" onclick="previewTheme('retro')">
+                <div class="theme-item" data-preview="retro" onclick="previewTheme('retro')">
+                    <div class="theme-preview"></div>
                     <span class="material-icons">style</span>
                     <span>Retro</span>
                 </div>
