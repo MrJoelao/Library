@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadBooks();
     initializeToast();
-    setupNavbar();
+    setupTheme();
+    setupSidebar();
     
     // Real-time search with debounce
     let searchTimeout;
@@ -80,25 +81,101 @@ function searchBooks() {
         });
 }
 
-function setupNavbar() {
-    const navbar = document.querySelector('.navbar-nav');
-    if (navbar) {
-        const username = localStorage.getItem('username');
-        navbar.innerHTML += `
-            <li class="nav-item">
-                <span class="nav-link">
-                    <i class="fas fa-user me-2"></i>
-                    ${username}
-                </span>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link" onclick="logout()">
-                    <i class="fas fa-sign-out-alt me-2"></i>
-                    Logout
-                </a>
-            </li>
-        `;
+// Theme Management
+function setupTheme() {
+    // Load saved theme or default to light
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    setTheme(savedTheme);
+    
+    document.getElementById('userNameDisplay').textContent = localStorage.getItem('username');
+}
+
+let selectedTheme = null;
+
+function openThemeModal() {
+    const modal = document.getElementById('themeModal');
+    modal.classList.add('show');
+    // Set currently active theme
+    const currentTheme = document.body.getAttribute('data-theme');
+    setActiveTheme(currentTheme);
+    selectedTheme = currentTheme;
+}
+
+function closeThemeModal() {
+    const modal = document.getElementById('themeModal');
+    modal.classList.remove('show');
+    // Reset preview to current theme
+    const currentTheme = document.body.getAttribute('data-theme');
+    document.body.setAttribute('data-theme', currentTheme);
+}
+
+function previewTheme(theme) {
+    document.body.setAttribute('data-theme', theme);
+    setActiveTheme(theme);
+    selectedTheme = theme;
+}
+
+function setActiveTheme(theme) {
+    document.querySelectorAll('.theme-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('onclick').includes(theme)) {
+            item.classList.add('active');
+        }
+    });
+}
+
+function applyTheme() {
+    if (selectedTheme) {
+        localStorage.setItem('theme', selectedTheme);
+        closeThemeModal();
     }
+}
+
+// Load saved theme or default to light
+function setupTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+    setActiveTheme(savedTheme);
+}
+
+// Sidebar Management
+function setupSidebar() {
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    
+    // Toggle sidebar on button click
+    sidebarToggle.addEventListener('click', () => {
+        document.body.classList.toggle('sidebar-collapsed');
+    });
+    
+    // Handle small screens
+    if (window.innerWidth <= 768) {
+        document.body.classList.add('sidebar-collapsed');
+    }
+    
+    // Close sidebar when clicking outside on small screens
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768 && 
+            !sidebar.contains(e.target) && 
+            !sidebarToggle.contains(e.target)) {
+            document.body.classList.add('sidebar-collapsed');
+        }
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth <= 768) {
+            document.body.classList.add('sidebar-collapsed');
+        }
+    });
+    
+    // Setup submenu toggles
+    document.querySelectorAll('.sidebar-nav .dropdown').forEach(dropdown => {
+        const toggle = dropdown.querySelector('[data-bs-toggle]');
+        toggle.addEventListener('click', () => {
+            toggle.classList.toggle('collapsed');
+        });
+    });
 }
 
 function logout() {
@@ -141,58 +218,51 @@ function returnBook(id) {
 }
 
 function displayBooks(books) {
-    const tableBody = document.getElementById('booksTableBody');
-    tableBody.innerHTML = '';
+    const container = document.getElementById('booksContainer');
+    container.innerHTML = '';
     
     if (books.length === 0) {
-        const emptyRow = document.createElement('tr');
-        emptyRow.innerHTML = `
-            <td colspan="4" class="text-center py-5">
+        container.innerHTML = `
+            <div class="text-center py-5">
                 <i class="fas fa-book-open fa-3x mb-3 text-muted"></i>
                 <p class="text-muted">Nessun libro trovato</p>
-            </td>
+            </div>
         `;
-        tableBody.appendChild(emptyRow);
         return;
     }
     
     books.forEach(book => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-            </td>
-            <td>
-                <div class="book-title">${book.title}</div>
-                <div class="book-author">${book.author}</div>
-            </td>
-            <td>
-                <div class="${book.available ? 'status-available' : 'status-unavailable'}">
+        const card = document.createElement('div');
+        card.className = 'book-card';
+        card.innerHTML = `
+            <div class="book-cover">
+                <i class="fas fa-book fa-3x"></i>
+            </div>
+            <div class="book-info">
+                <h3 class="book-title">${book.title}</h3>
+                <p class="book-author">${book.author}</p>
+                <div class="${book.available ? 'status-available' : 'status-unavailable'} mb-3">
                     <i class="fas fa-${book.available ? 'check-circle' : 'times-circle'}"></i>
                     ${book.available ? 'Disponibile' : 'In prestito a ' + book.owner}
                 </div>
-            </td>
-            <td>
-            ${book.available ?
-                `<button class="btn btn-success btn-action" onclick="reserveBook('${book.id}')">
-                    <i class="fas fa-bookmark"></i>
-                    Prenota
-                </button>` :
-                (book.owner === localStorage.getItem('username') ?
-                    `<button class="btn btn-warning btn-action" onclick="returnBook('${book.id}')">
-                        <i class="fas fa-undo"></i>
-                        Restituisci
+                ${book.available ?
+                    `<button class="btn btn-success btn-action w-100" onclick="reserveBook('${book.id}')">
+                        <i class="fas fa-bookmark"></i>
+                        Prenota
                     </button>` :
-                    `<button class="btn btn-secondary btn-action" disabled>
-                        <i class="fas fa-lock"></i>
-                        Non disponibile
-                    </button>`
-                )
-            }
-            </td>
+                    (book.owner === localStorage.getItem('username') ?
+                        `<button class="btn btn-warning btn-action w-100" onclick="returnBook('${book.id}')">
+                            <i class="fas fa-undo"></i>
+                            Restituisci
+                        </button>` :
+                        `<button class="btn btn-secondary btn-action w-100" disabled>
+                            <i class="fas fa-lock"></i>
+                            Non disponibile
+                        </button>`
+                    )
+                }
+            </div>
         `;
-        tableBody.appendChild(row);
+        container.appendChild(card);
     });
 }
