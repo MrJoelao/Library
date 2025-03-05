@@ -17,7 +17,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-autoconfigure")
     implementation("org.springframework:spring-context")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 java {
@@ -27,6 +30,18 @@ java {
 
 application {
     mainClass.set("com.library.rmi.server.web.ServerWebApplication")
+}
+
+springBoot {
+    mainClass.set("com.library.rmi.server.web.ServerWebApplication")
+}
+
+tasks.getByName<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
+    mainClass.set("com.library.rmi.server.web.ServerWebApplication")
+    jvmArgs = listOf(
+        "-Djava.rmi.server.hostname=localhost",
+        "-Djava.rmi.server.useCodebaseOnly=false"
+    )
 }
 
 tasks.withType<Test> {
