@@ -1,7 +1,5 @@
 package com.library.rmi.server;
 
-import com.library.rmi.service.LibraryService;
-import com.library.rmi.service.LibraryServiceImpl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -10,6 +8,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Properties;
+
+import com.library.rmi.service.LibraryService;
+import com.library.rmi.service.LibraryServiceImpl;
 
 public class LibraryServer {
     private static final Properties properties = new Properties();
@@ -38,10 +39,10 @@ public class LibraryServer {
                 registry = LocateRegistry.getRegistry(DEFAULT_PORT);
             }
             
-            // Create and export the remote service
+            // Create the remote service (UnicastRemoteObject.exportObject is not needed since LibraryServiceImpl already extends UnicastRemoteObject)
             libraryService = new LibraryServiceImpl();
             
-            // Bind the remote service to the registry
+            // Bind the remote service to the registry (no need to cast since LibraryService extends Remote)
             registry.rebind("LibraryService", libraryService);
             
             System.out.println("Server RMI disponibile su " + hostname + ":" + DEFAULT_PORT);
