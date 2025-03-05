@@ -2,8 +2,15 @@
 let toast;
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Check authentication
+    if (!localStorage.getItem('username')) {
+        window.location.href = 'login.html';
+        return;
+    }
+
     loadBooks();
     initializeToast();
+    setupNavbar();
     
     // Add enter key support for search
     document.getElementById('searchInput').addEventListener('keypress', (e) => {
@@ -63,8 +70,35 @@ function searchBooks() {
         });
 }
 
+function setupNavbar() {
+    const navbar = document.querySelector('.navbar-nav');
+    if (navbar) {
+        const username = localStorage.getItem('username');
+        navbar.innerHTML += `
+            <li class="nav-item">
+                <span class="nav-link">
+                    <i class="fas fa-user me-2"></i>
+                    ${username}
+                </span>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="logout()">
+                    <i class="fas fa-sign-out-alt me-2"></i>
+                    Logout
+                </a>
+            </li>
+        `;
+    }
+}
+
+function logout() {
+    localStorage.removeItem('username');
+    window.location.href = 'login.html';
+}
+
 function reserveBook(id) {
-    fetch(`/api/books/${id}/reserve`, { method: 'POST' })
+    const username = localStorage.getItem('username');
+    fetch(`/api/books/${id}/reserve?username=${encodeURIComponent(username)}`, { method: 'POST' })
         .then(response => {
             if (response.ok) {
                 loadBooks();
@@ -80,7 +114,8 @@ function reserveBook(id) {
 }
 
 function returnBook(id) {
-    fetch(`/api/books/${id}/return`, { method: 'POST' })
+    const username = localStorage.getItem('username');
+    fetch(`/api/books/${id}/return?username=${encodeURIComponent(username)}`, { method: 'POST' })
         .then(response => {
             if (response.ok) {
                 loadBooks();
@@ -126,20 +161,26 @@ function displayBooks(books) {
             <td>
                 <div class="${book.available ? 'status-available' : 'status-unavailable'}">
                     <i class="fas fa-${book.available ? 'check-circle' : 'times-circle'}"></i>
-                    ${book.available ? 'Disponibile' : 'Non disponibile'}
+                    ${book.available ? 'Disponibile' : 'In prestito a ' + book.owner}
                 </div>
             </td>
             <td>
-                ${book.available ?
-                    `<button class="btn btn-success btn-action" onclick="reserveBook('${book.id}')">
-                        <i class="fas fa-bookmark"></i>
-                        Prenota
-                    </button>` :
+            ${book.available ?
+                `<button class="btn btn-success btn-action" onclick="reserveBook('${book.id}')">
+                    <i class="fas fa-bookmark"></i>
+                    Prenota
+                </button>` :
+                (book.owner === localStorage.getItem('username') ?
                     `<button class="btn btn-warning btn-action" onclick="returnBook('${book.id}')">
                         <i class="fas fa-undo"></i>
                         Restituisci
+                    </button>` :
+                    `<button class="btn btn-secondary btn-action" disabled>
+                        <i class="fas fa-lock"></i>
+                        Non disponibile
                     </button>`
-                }
+                )
+            }
             </td>
         `;
         tableBody.appendChild(row);
