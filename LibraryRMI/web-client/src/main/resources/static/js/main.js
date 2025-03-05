@@ -8,27 +8,37 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    loadBooks();
-    initializeToast();
     setupTheme();
     setupSidebar();
+    initializeToast();
     
-    // Real-time search with debounce
-    let searchTimeout;
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-            searchBooks();
-        }, 300); // Wait 300ms after user stops typing
-    });
-
-    // Keep enter key support as fallback
-    document.getElementById('searchInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
+    // Only load books if we're on the main page
+    const booksContainer = document.getElementById('booksContainer');
+    if (booksContainer) {
+        loadBooks();
+        
+        // Real-time search with debounce
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', (e) => {
             clearTimeout(searchTimeout);
-            searchBooks();
-        }
-    });
+            searchTimeout = setTimeout(() => {
+                searchBooks();
+            }, 300); // Wait 300ms after user stops typing
+        });
+
+        // Keep enter key support as fallback
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                clearTimeout(searchTimeout);
+                searchBooks();
+            }
+        });
+    }
+    
+    // Initialize profile page if we're on it
+    if (window.location.pathname.includes('profile.html')) {
+        initProfilePage();
+    }
 });
 
 function initializeToast() {
@@ -85,7 +95,8 @@ function searchBooks() {
 function setupTheme() {
     // Load saved theme or default to light
     const savedTheme = localStorage.getItem('theme') || 'light';
-    setTheme(savedTheme);
+    document.body.setAttribute('data-theme', savedTheme);
+    setActiveTheme(savedTheme);
     
     document.getElementById('userNameDisplay').textContent = localStorage.getItem('username');
 }
@@ -131,13 +142,6 @@ function applyTheme() {
     }
 }
 
-// Load saved theme or default to light
-function setupTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.body.setAttribute('data-theme', savedTheme);
-    setActiveTheme(savedTheme);
-}
-
 // Sidebar Management
 function setupSidebar() {
     const sidebarToggle = document.getElementById('sidebarToggle');
@@ -177,6 +181,73 @@ function setupSidebar() {
         });
     });
 }
+
+// Profile page functions
+function togglePasswordVisibility(button) {
+    const input = button.previousElementSibling;
+    const icon = button.querySelector('i');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+function resetForm() {
+    document.getElementById('profileForm').reset();
+    showNotification('Form reset', 'I campi del form sono stati ripristinati.');
+}
+
+// Handle profile form submission
+if (document.getElementById('profileForm')) {
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        
+        // Here you would typically send this data to your server
+        // For now, we'll just show a success notification
+        
+        // Update displayed username in sidebar and profile
+        if (username) {
+            document.getElementById('userNameDisplay').textContent = username;
+            if (document.getElementById('profileName')) {
+                document.getElementById('profileName').textContent = username;
+            }
+        }
+        
+        showNotification('Profilo aggiornato', 'Le tue informazioni sono state aggiornate con successo.');
+    });
+}
+
+// Initialize profile page if we're on it
+function initProfilePage() {
+    if (window.location.pathname.includes('profile.html')) {
+        // Set initial values from localStorage or other source
+        const savedUsername = localStorage.getItem('username') || 'Nome Utente';
+        document.getElementById('username').value = savedUsername;
+        document.getElementById('profileName').textContent = savedUsername;
+        document.getElementById('userNameDisplay').textContent = savedUsername;
+        
+        // Set member since date
+        const memberSince = localStorage.getItem('memberSince') || 'Gennaio 2024';
+        document.getElementById('memberSince').textContent = memberSince;
+    }
+}
+
+// Call init function when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initProfilePage();
+});
 
 function logout() {
     localStorage.removeItem('username');
