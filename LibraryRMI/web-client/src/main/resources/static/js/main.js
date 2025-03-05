@@ -12,9 +12,19 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeToast();
     setupNavbar();
     
-    // Add enter key support for search
+    // Real-time search with debounce
+    let searchTimeout;
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            searchBooks();
+        }, 300); // Wait 300ms after user stops typing
+    });
+
+    // Keep enter key support as fallback
     document.getElementById('searchInput').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
+            clearTimeout(searchTimeout);
             searchBooks();
         }
     });
