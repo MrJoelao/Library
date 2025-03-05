@@ -46,6 +46,25 @@ public class LibraryController {
         }
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<Map<String, String>> register(@RequestParam String username, @RequestParam String password) {
+        try {
+            boolean success = libraryService.register(username, password);
+            if (success) {
+                // Se la registrazione ha successo, esegui il login automaticamente
+                boolean loginSuccess = libraryService.login(username, password);
+                if (loginSuccess) {
+                    Map<String, String> response = new HashMap<>();
+                    response.put("username", username);
+                    return ResponseEntity.ok(response);
+                }
+            }
+            return ResponseEntity.badRequest().build();
+        } catch (RemoteException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @GetMapping("/books")
     public ResponseEntity<List<Book>> getAllBooks() {
         try {

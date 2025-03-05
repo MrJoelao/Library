@@ -41,10 +41,46 @@ public class LibraryServiceImpl extends UnicastRemoteObject implements LibrarySe
         return books.get(id);
     }
 
+    private boolean isValidPassword(String password) {
+        // Almeno 8 caratteri
+        if (password.length() < 8) return false;
+        
+        // Almeno una lettera maiuscola
+        if (!password.matches(".*[A-Z].*")) return false;
+        
+        // Almeno una lettera minuscola
+        if (!password.matches(".*[a-z].*")) return false;
+        
+        // Almeno un numero
+        if (!password.matches(".*\\d.*")) return false;
+        
+        // Almeno un carattere speciale
+        if (!password.matches(".*[!@#$%^&*()\\-_=+\\[\\]{};:'\",.<>/?].*")) return false;
+        
+        return true;
+    }
+
     @Override
     public boolean login(String username, String password) throws RemoteException {
         String storedPassword = users.get(username);
         return storedPassword != null && storedPassword.equals(password);
+    }
+
+    @Override
+    public boolean register(String username, String password) throws RemoteException {
+        // Verifica se l'username esiste già
+        if (users.containsKey(username)) {
+            return false;
+        }
+
+        // Valida la password
+        if (!isValidPassword(password)) {
+            return false;
+        }
+
+        // Registra il nuovo utente
+        users.put(username, password);
+        return true;
     }
 
     @Override
