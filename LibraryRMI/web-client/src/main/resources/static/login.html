@@ -23,15 +23,11 @@
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
-                <i class="fas fa-book-reader"></i>
-                <h1>Biblioteca Comunale</h1>
+                <div class="header-content">
+                    <i class="fas fa-book-reader"></i>
+                    <h1>Biblioteca Comunale</h1>
+                </div>
             </div>
-            <div class="form-toggle">
-                <button type="button" class="toggle-button" onclick="toggleForms()">
-                    <span id="toggleText">Non hai un account? Registrati</span>
-                </button>
-            </div>
-
             <form id="loginForm" onsubmit="return handleLogin(event)">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="username" placeholder="Username" required>
@@ -50,39 +46,90 @@
                 <div id="loginError" class="error-message">
                     <!-- Error messages will be inserted here -->
                 </div>
+                <div class="form-toggle">
+                    <button type="button" class="toggle-button" onclick="toggleForms()">
+                        <span id="toggleText">Non hai un account? Registrati</span>
+                    </button>
+                </div>
             </form>
 
             <form id="registerForm" onsubmit="return handleRegister(event)">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="regUsername" placeholder="Username" required>
-                    <label for="regUsername">Username</label>
+                <div class="step-indicator">
+                    <div class="step active" data-step="1">1</div>
+                    <div class="step" data-step="2">2</div>
+                    <div class="step" data-step="3">3</div>
                 </div>
-                <div class="form-floating mb-3 password-container">
-                    <input type="password" class="form-control" id="regPassword" placeholder="Password" required 
-                           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()[\]{}\-_=+;:'\",.<>/?]).{8,}$"
-                           title="La password deve contenere almeno 8 caratteri, una lettera maiuscola, una minuscola, un numero e un carattere speciale"
-                           oninput="updatePasswordStrength(this.value)">
-                    <label for="regPassword">Password</label>
-                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility(this)">
-                        <i class="far fa-eye"></i>
-                    </button>
-                    <div class="password-strength-meter">
-                        <div class="strength-bar"></div>
+                
+                <div class="step-content">
+                    <!-- Step 1: Username -->
+                    <div class="step-page active" data-step="1">
+                        <h3 class="step-title">Scegli il tuo username</h3>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="regUsername" placeholder="Username" required>
+                            <label for="regUsername">Username</label>
+                        </div>
                     </div>
-                    <small class="password-tips"></small>
+
+                    <!-- Step 2: Password -->
+                    <div class="step-page" data-step="2">
+                        <h3 class="step-title">Crea una password sicura</h3>
+                        <div class="form-floating mb-3 password-container">
+                            <input type="password" class="form-control" id="regPassword" placeholder="Password" required 
+                                   oninput="updatePasswordStrength(this.value)"
+                                   autocomplete="new-password">
+                            <label for="regPassword">Password</label>
+                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility(this)">
+                                <i class="far fa-eye"></i>
+                            </button>
+                            <div class="password-strength-meter">
+                                <div class="strength-bar"></div>
+                            </div>
+                            <div class="password-requirements">
+                                <div class="requirement" id="length-check">
+                                    <i class="fas fa-check-circle"></i> 8 caratteri
+                                </div>
+                                <div class="requirement" id="lowercase-check">
+                                    <i class="fas fa-check-circle"></i> Una lettera minuscola
+                                </div>
+                                <div class="requirement" id="uppercase-check">
+                                    <i class="fas fa-check-circle"></i> Una lettera maiuscola
+                                </div>
+                                <div class="requirement" id="number-check">
+                                    <i class="fas fa-check-circle"></i> Un numero
+                                </div>
+                                <div class="requirement" id="special-check">
+                                    <i class="fas fa-check-circle"></i> Un carattere speciale
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Confirm Password -->
+                    <div class="step-page" data-step="3">
+                        <h3 class="step-title">Conferma la tua password</h3>
+                        <div class="form-floating mb-3 password-container">
+                            <input type="password" class="form-control" id="confirmPassword" placeholder="Conferma Password" required>
+                            <label for="confirmPassword">Conferma Password</label>
+                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility(this)">
+                                <i class="far fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-floating mb-3 password-container">
-                    <input type="password" class="form-control" id="confirmPassword" placeholder="Conferma Password" required>
-                    <label for="confirmPassword">Conferma Password</label>
-                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility(this)">
-                        <i class="far fa-eye"></i>
-                    </button>
+
+                <div class="step-navigation">
+                    <button type="button" class="nav-button prev-button" onclick="previousStep()" style="display: none;">Indietro</button>
+                    <button type="button" class="nav-button next-button" onclick="nextStep()">Avanti</button>
+                    <button type="submit" class="nav-button submit-button" style="display: none;">Registrati</button>
                 </div>
-                <button type="submit" class="login-button">
-                    <span class="button-text">Registrati</span>
-                </button>
+
                 <div id="registerError" class="error-message">
                     <!-- Error messages will be inserted here -->
+                </div>
+                <div class="form-toggle">
+                    <button type="button" class="toggle-button" onclick="toggleForms()">
+                        <span id="toggleText">Hai già un account? Accedi</span>
+                    </button>
                 </div>
             </form>
         </div>
@@ -139,22 +186,49 @@
             return false;
         }
 
-        async function handleRegister(event) {
-            event.preventDefault();
-            const form = document.getElementById('registerForm');
-            const errorMessage = document.getElementById('registerError');
-            const username = document.getElementById('regUsername').value;
-            const password = document.getElementById('regPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
+            function validatePassword(password) {
+                const checks = {
+                    length: password.length >= 8,
+                    lowercase: /[a-z]/.test(password),
+                    uppercase: /[A-Z]/.test(password),
+                    numbers: /\d/.test(password),
+                    special: /[!@#$%^&*()[\]{}\-_=+;:'\",.<>/?]/.test(password)
+                };
 
-            if (password !== confirmPassword) {
-                errorMessage.textContent = 'Le password non coincidono';
-                errorMessage.classList.add('show');
-                setTimeout(() => {
-                    errorMessage.classList.remove('show');
-                }, 3000);
-                return false;
+                document.getElementById('length-check').classList.toggle('valid', checks.length);
+                document.getElementById('lowercase-check').classList.toggle('valid', checks.lowercase);
+                document.getElementById('uppercase-check').classList.toggle('valid', checks.uppercase);
+                document.getElementById('number-check').classList.toggle('valid', checks.numbers);
+                document.getElementById('special-check').classList.toggle('valid', checks.special);
+
+                return Object.values(checks).every(Boolean);
             }
+
+            async function handleRegister(event) {
+                event.preventDefault();
+                const form = document.getElementById('registerForm');
+                const errorMessage = document.getElementById('registerError');
+                const username = document.getElementById('regUsername').value;
+                const password = document.getElementById('regPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+
+                if (!validatePassword(password)) {
+                    errorMessage.textContent = 'La password non soddisfa i requisiti minimi';
+                    errorMessage.classList.add('show');
+                    setTimeout(() => {
+                        errorMessage.classList.remove('show');
+                    }, 3000);
+                    return false;
+                }
+
+                if (password !== confirmPassword) {
+                    errorMessage.textContent = 'Le password non coincidono';
+                    errorMessage.classList.add('show');
+                    setTimeout(() => {
+                        errorMessage.classList.remove('show');
+                    }, 3000);
+                    return false;
+                }
 
             try {
                 form.classList.add('loading');
@@ -197,20 +271,8 @@
         </button>
     </div>
 
-    <div class="quote-container">
-        <p id="randomQuote" class="book-quote"></p>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Quotes array
-        const quotes = [
-            "Un libro è un giardino che puoi custodire in tasca. - Proverbio Cinese",
-            "Chi legge vive mille vite prima di morire. - George R.R. Martin",
-            "I libri sono un modo unico di essere vivi. - Kurt Vonnegut",
-            "Leggere è sognare ad occhi aperti. - Günter Grass",
-            "La lettura è il viaggio di chi non può prendere un treno. - Francis de Croisset"
-        ];
 
         // Particle animation
         const canvas = document.getElementById('particles');
@@ -272,6 +334,91 @@
         initParticles();
         animateParticles();
 
+        // Step navigation
+        let currentStep = 1;
+        const totalSteps = 3;
+
+        function updateStepIndicators(step) {
+            document.querySelectorAll('.step').forEach(s => {
+                s.classList.remove('active', 'completed');
+                if (parseInt(s.dataset.step) < step) {
+                    s.classList.add('completed');
+                } else if (parseInt(s.dataset.step) === step) {
+                    s.classList.add('active');
+                }
+            });
+        }
+
+        function updateNavigationButtons(step) {
+            const prevButton = document.querySelector('.prev-button');
+            const nextButton = document.querySelector('.next-button');
+            const submitButton = document.querySelector('.submit-button');
+
+            prevButton.style.display = step > 1 ? 'inline-block' : 'none';
+            nextButton.style.display = step < totalSteps ? 'inline-block' : 'none';
+            submitButton.style.display = step === totalSteps ? 'inline-block' : 'none';
+        }
+
+        function validateCurrentStep() {
+            const errorMessage = document.getElementById('registerError');
+            switch(currentStep) {
+                case 1:
+                    const username = document.getElementById('regUsername').value;
+                    if (!username) {
+                        errorMessage.textContent = 'Inserisci un username';
+                        errorMessage.classList.add('show');
+                        setTimeout(() => errorMessage.classList.remove('show'), 3000);
+                        return false;
+                    }
+                    return true;
+                case 2:
+                    const password = document.getElementById('regPassword').value;
+                    if (!validatePassword(password)) {
+                        errorMessage.textContent = 'La password non soddisfa i requisiti minimi';
+                        errorMessage.classList.add('show');
+                        setTimeout(() => errorMessage.classList.remove('show'), 3000);
+                        return false;
+                    }
+                    return true;
+                case 3:
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    const originalPassword = document.getElementById('regPassword').value;
+                    if (confirmPassword !== originalPassword) {
+                        errorMessage.textContent = 'Le password non coincidono';
+                        errorMessage.classList.add('show');
+                        setTimeout(() => errorMessage.classList.remove('show'), 3000);
+                        return false;
+                    }
+                    return true;
+            }
+            return true;
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.step-page').forEach(page => {
+                page.classList.remove('active');
+                if (parseInt(page.dataset.step) === step) {
+                    page.classList.add('active');
+                }
+            });
+            updateStepIndicators(step);
+            updateNavigationButtons(step);
+        }
+
+        function nextStep() {
+            if (validateCurrentStep() && currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
         // Password visibility toggle
         function togglePasswordVisibility(button) {
             const input = button.parentElement.querySelector('input');
@@ -292,9 +439,6 @@
         // Password strength meter
         function updatePasswordStrength(password) {
             const strengthBar = document.querySelector('.strength-bar');
-            const tips = document.querySelector('.password-tips');
-            
-            let strength = 0;
             const checks = {
                 length: password.length >= 8,
                 lowercase: /[a-z]/.test(password),
@@ -303,26 +447,12 @@
                 special: /[!@#$%^&*()[\]{}\-_=+;:'\",.<>/?]/.test(password)
             };
 
-            strength = Object.values(checks).filter(Boolean).length;
-            
+            const strength = Object.values(checks).filter(Boolean).length;
             const colors = ['#ff4444', '#ffbb33', '#00C851', '#33b5e5', '#2BBBAD'];
             strengthBar.style.width = `${(strength / 5) * 100}%`;
             strengthBar.style.backgroundColor = colors[strength - 1] || '#ff4444';
 
-            if (password.length > 0) {
-                let missingChecks = [];
-                if (!checks.length) missingChecks.push('8 caratteri');
-                if (!checks.lowercase) missingChecks.push('una lettera minuscola');
-                if (!checks.uppercase) missingChecks.push('una lettera maiuscola');
-                if (!checks.numbers) missingChecks.push('un numero');
-                if (!checks.special) missingChecks.push('un carattere speciale');
-
-                tips.textContent = missingChecks.length > 0 
-                    ? `Aggiungi: ${missingChecks.join(', ')}`
-                    : 'Password eccellente!';
-            } else {
-                tips.textContent = '';
-            }
+            validatePassword(password);
         }
 
         // Theme toggle
@@ -348,6 +478,26 @@
         // Update quote every 10 seconds
         updateRandomQuote();
         setInterval(updateRandomQuote, 10000);
+
+        // Handle header minimization on scroll
+        const loginCard = document.querySelector('.login-card');
+        const header = document.querySelector('.login-header');
+
+        loginCard.addEventListener('scroll', () => {
+            if (loginCard.scrollTop > 50) {
+                header.classList.add('minimized');
+            } else {
+                header.classList.remove('minimized');
+            }
+        });
+
+        document.querySelector('.login-container').addEventListener('scroll', () => {
+            if (document.querySelector('.login-container').scrollTop > 50) {
+                header.classList.add('minimized');
+            } else {
+                header.classList.remove('minimized');
+            }
+        });
 
         // Add book animation to header icon
         const bookIcon = document.querySelector('.login-header i');
