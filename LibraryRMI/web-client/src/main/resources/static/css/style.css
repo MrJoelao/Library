@@ -272,14 +272,20 @@ body {
 .toast-container {
     position: fixed;
     bottom: 20px;
-    left: 0;
-    right: 0;
+    right: min(30px, 5%);
+    width: min(350px, calc(100% - 320px)); /* 280px sidebar + 40px margins */
     z-index: 999999;
     pointer-events: none;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
     gap: 10px;
+    padding: 0 10px;
+}
+
+/* Ensure the toast doesn't overlap with the collapsed sidebar state */
+body.sidebar-collapsed .toast-container {
+    width: min(350px, calc(100% - 60px)); /* 30px on each side */
 }
 
 /* Toast Notifications */
@@ -289,8 +295,7 @@ body {
     box-shadow: var(--shadow-color) 0px 4px 12px;
     border-radius: 8px;
     pointer-events: auto;
-    min-width: 250px;
-    max-width: 350px;
+    width: 100%;
     opacity: 0;
     animation: slideUpFade 0.3s ease forwards;
     margin: 0 auto;
@@ -336,22 +341,22 @@ body {
 
 @keyframes slideUpFade {
     from {
-        transform: translateY(100%);
+        transform: translateX(100%);
         opacity: 0;
     }
     to {
-        transform: translateY(0);
+        transform: translateX(0);
         opacity: 1;
     }
 }
 
 @keyframes slideDownFade {
     from {
-        transform: translateY(0);
+        transform: translateX(0);
         opacity: 1;
     }
     to {
-        transform: translateY(100%);
+        transform: translateX(100%);
         opacity: 0;
     }
 }
@@ -369,6 +374,10 @@ body {
     .main-content {
         margin-right: 0;
         width: 100%;
+    }
+
+    .toast-container {
+        width: min(350px, calc(100% - 40px)); /* 20px on each side */
     }
     
     .hero-section {
