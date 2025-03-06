@@ -50,8 +50,8 @@ function showNotification(message, isError = false) {
     const toastBody = toastElement.querySelector('.toast-body');
     toastBody.textContent = message;
     
-    toastElement.classList.remove('bg-danger', 'bg-success');
-    toastElement.classList.add(isError ? 'bg-danger' : 'bg-success');
+    toastElement.classList.remove('notification-error', 'notification-success');
+    toastElement.classList.add(isError ? 'notification-error' : 'notification-success');
     
     toast.show();
 }
