@@ -121,24 +121,51 @@ function closeThemeModal() {
 }
 
 function previewTheme(theme) {
+    const oldTheme = document.body.getAttribute('data-theme');
     document.body.setAttribute('data-theme', theme);
+    
+    // Aggiunge una classe di transizione temporanea per l'effetto di dissolvenza
+    document.body.classList.add('theme-transitioning');
+    setTimeout(() => {
+        document.body.classList.remove('theme-transitioning');
+    }, 300);
+
     setActiveTheme(theme);
     selectedTheme = theme;
+
+    // Aggiorna dinamicamente gli elementi di anteprima nel selettore
+    updateThemePreview(theme);
 }
 
 function setActiveTheme(theme) {
     document.querySelectorAll('.theme-item').forEach(item => {
         item.classList.remove('active');
-        if (item.getAttribute('onclick').includes(theme)) {
+        if (item.getAttribute('data-preview') === theme) {
             item.classList.add('active');
         }
     });
 }
 
+function updateThemePreview(theme) {
+    // Aggiorna i colori dell'anteprima in base al tema selezionato
+    const previewElement = document.querySelector(`.theme-item[data-preview="${theme}"] .theme-preview`);
+    if (previewElement) {
+        const style = getComputedStyle(document.body);
+        previewElement.style.setProperty('--preview-primary', style.getPropertyValue('--primary-color'));
+        previewElement.style.setProperty('--preview-background', style.getPropertyValue('--background-color'));
+        previewElement.style.setProperty('--preview-surface', style.getPropertyValue('--surface-color'));
+    }
+}
+
 function applyTheme() {
     if (selectedTheme) {
         localStorage.setItem('theme', selectedTheme);
-        closeThemeModal();
+        // Aggiungi una breve animazione quando applichi il tema
+        document.body.classList.add('theme-applying');
+        setTimeout(() => {
+            document.body.classList.remove('theme-applying');
+            closeThemeModal();
+        }, 300);
     }
 }
 
