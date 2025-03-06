@@ -219,7 +219,7 @@ form {
     bottom: 20px;
     right: min(30px, 5%);
     width: min(350px, calc(100% - 60px)); /* 30px on each side */
-    z-index: 999999;
+    z-index: 1060;
     pointer-events: none;
     display: flex;
     flex-direction: column;
@@ -243,6 +243,15 @@ form {
 
 .toast.hiding {
     animation: slideDownFade 0.3s ease forwards;
+}
+
+/* Ensure close button is clickable */
+.toast {
+    pointer-events: auto !important;
+}
+
+.toast-header .close-btn {
+    z-index: 2;
 }
 
 .toast-header {
@@ -546,10 +555,134 @@ form.loading {
     font-size: 20px;
 }
 
+/* Theme Modal */
+.theme-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+
+.theme-modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.theme-modal-content {
+    background: var(--surface-color);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 800px;
+    margin: auto;
+    padding: 2rem;
+    position: relative;
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+    box-shadow: var(--card-shadow);
+}
+
+.theme-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.theme-modal-header h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+}
+
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.theme-item {
+    background: var(--surface-color);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.theme-item:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-color);
+}
+
+.theme-item.active {
+    border-color: var(--primary-color);
+    background: rgba(var(--primary-color-rgb), 0.1);
+}
+
+.theme-preview {
+    height: 80px;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.theme-item span {
+    display: block;
+    color: var(--text-primary);
+}
+
+.theme-item .material-icons {
+    font-size: 24px;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.theme-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+}
+
+.theme-modal-footer .btn {
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.theme-modal-footer .btn-primary {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.theme-modal-footer .btn-primary:hover {
+    background: var(--button-hover-bg);
+}
+
 /* Responsive adjustments */
 @media (max-width: 400px) {
     .login-card {
         margin: 0 10px;
+        min-width: unset;
     }
 
     .step-indicator {
@@ -567,5 +700,9 @@ form.loading {
 
     .nav-button {
         width: 100%;
+    }
+
+    .theme-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     }
 }

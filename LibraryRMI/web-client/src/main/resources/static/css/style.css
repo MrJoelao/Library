@@ -268,13 +268,97 @@ body {
     box-shadow: var(--card-shadow);
 }
 
+.theme-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.theme-modal-header h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+}
+
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.theme-item {
+    background: var(--surface-color);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.theme-item:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-color);
+}
+
+.theme-item.active {
+    border-color: var(--primary-color);
+    background: rgba(var(--primary-color-rgb), 0.1);
+}
+
+.theme-preview {
+    height: 80px;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+}
+
+.theme-item span {
+    display: block;
+    color: var(--text-primary);
+}
+
+.theme-item .material-icons {
+    font-size: 24px;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.theme-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+}
+
+.theme-modal-footer .btn {
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.theme-modal-footer .btn-primary {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.theme-modal-footer .btn-primary:hover {
+    background: var(--button-hover-bg);
+}
+
 /* Toast Container */
 .toast-container {
     position: fixed;
     bottom: 20px;
     right: min(30px, 5%);
     width: min(350px, calc(100% - 320px)); /* 280px sidebar + 40px margins */
-    z-index: 999999;
+    z-index: 1060;
     pointer-events: none;
     display: flex;
     flex-direction: column;

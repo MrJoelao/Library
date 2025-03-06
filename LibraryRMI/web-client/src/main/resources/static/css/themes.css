@@ -10,6 +10,7 @@
 /* Light Theme (Modern) */
 [data-theme="light"] {
     --primary-color: #1976d2;
+    --primary-color-rgb: 25, 118, 210;
     --secondary-color: #424242;
     --accent-color: #2196f3;
     --background-color: #f5f6fa;
@@ -32,6 +33,7 @@
 /* Deep Dark Theme */
 [data-theme="deep-dark"] {
     --primary-color: #bb86fc;
+    --primary-color-rgb: 187, 134, 252;
     --secondary-color: #121212;
     --accent-color: #03dac6;
     --background-color: #000000;
@@ -54,6 +56,7 @@
 /* Midnight Blue Theme */
 [data-theme="midnight-blue"] {
     --primary-color: #4fc3f7;
+    --primary-color-rgb: 79, 195, 247;
     --secondary-color: #01579b;
     --accent-color: #80d8ff;
     --background-color: #002171;
@@ -76,6 +79,7 @@
 /* Forest Night Theme */
 [data-theme="forest-night"] {
     --primary-color: #81c784;
+    --primary-color-rgb: 129, 199, 132;
     --secondary-color: #1b5e20;
     --accent-color: #b9f6ca;
     --background-color: #1b2620;
@@ -98,6 +102,7 @@
 /* Cyberpunk Theme */
 [data-theme="cyberpunk"] {
     --primary-color: #00ff9f;
+    --primary-color-rgb: 0, 255, 159;
     --secondary-color: #6a1b9a;
     --accent-color: #ff00ff;
     --background-color: #1a1a2e;
@@ -120,6 +125,7 @@
 /* Sunset Theme */
 [data-theme="sunset"] {
     --primary-color: #ff6f00;
+    --primary-color-rgb: 255, 111, 0;
     --secondary-color: #bf360c;
     --accent-color: #ff9e40;
     --background-color: #3e2723;
@@ -142,6 +148,7 @@
 /* Arctic Theme */
 [data-theme="arctic"] {
     --primary-color: #4fc3f7;
+    --primary-color-rgb: 79, 195, 247;
     --secondary-color: #b3e5fc;
     --accent-color: #29b6f6;
     --background-color: #e1f5fe;
@@ -164,6 +171,7 @@
 /* Desert Theme */
 [data-theme="desert"] {
     --primary-color: #ff9800;
+    --primary-color-rgb: 255, 152, 0;
     --secondary-color: #f57c00;
     --accent-color: #ffd180;
     --background-color: #fbe9e7;
@@ -186,6 +194,7 @@
 /* Space Theme */
 [data-theme="space"] {
     --primary-color: #7e57c2;
+    --primary-color-rgb: 126, 87, 194;
     --secondary-color: #5e35b1;
     --accent-color: #b39ddb;
     --background-color: #1a1a2e;
@@ -208,6 +217,7 @@
 /* Neon Theme */
 [data-theme="neon"] {
     --primary-color: #00ff00;
+    --primary-color-rgb: 0, 255, 0;
     --secondary-color: #ff00ff;
     --accent-color: #00ffff;
     --background-color: #000000;
@@ -230,6 +240,7 @@
 /* Retro Theme */
 [data-theme="retro"] {
     --primary-color: #ffd700;
+    --primary-color-rgb: 255, 215, 0;
     --secondary-color: #cd853f;
     --accent-color: #daa520;
     --background-color: #f5e6d3;
