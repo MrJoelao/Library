@@ -9,39 +9,51 @@
     <link href="css/styles.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-    <div id="app" class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">
-                            <i class="bi bi-hdd-rack me-2"></i>
-                            RMI Server Management
-                        </h4>
-                        <div class="d-flex align-items-center">
-                            <span class="status-indicator" :class="serverStatus === 'online' ? 'status-online' : 'status-offline'"></span>
-                            <span class="text-capitalize">{{ serverStatus }}</span>
-                        </div>
+    <div id="app" class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="container-fluid py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <i class="bi bi-hdd-rack me-2"></i>
+                        RMI Server Management
+                    </h4>
+                    <div class="server-status d-flex align-items-center">
+                        <span class="status-indicator" :class="serverStatus === 'online' ? 'status-online' : 'status-offline'"></span>
+                        <span class="text-capitalize status-text">{{ serverStatus }}</span>
                     </div>
-                    <div class="card-body">
-                        <div class="mb-4 d-flex gap-2 justify-content-center">
-                            <button @click="startServer" class="btn btn-success btn-control" :disabled="serverStatus === 'online'">
+                </div>
+            </div>
+        </header>
+        <main class="dashboard-main container-fluid py-4">
+            <div class="card dashboard-card">
+                <div class="card-body">
+                    <div class="controls-section mb-4" @click="resumePolling">
+                        <div v-if="lastError" class="alert alert-danger text-center mb-3" role="alert">
+                            {{ lastError }}
+                            <div class="mt-2">
+                                <small>Clicca per riprovare</small>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3 justify-content-center">
+                            <button @click="startServer" class="btn btn-control btn-start" :disabled="serverStatus === 'online' || loading" :class="{'btn-loading': loading}">
                                 <i class="bi bi-play-fill me-1"></i> Avvia
                             </button>
-                            <button @click="stopServer" class="btn btn-danger btn-control" :disabled="serverStatus === 'offline'">
+                            <button @click="stopServer" class="btn btn-control btn-stop" :disabled="serverStatus === 'offline' || loading" :class="{'btn-loading': loading}">
                                 <i class="bi bi-stop-fill me-1"></i> Ferma
                             </button>
-                            <button @click="restartServer" class="btn btn-warning btn-control" :disabled="serverStatus === 'offline'">
+                            <button @click="restartServer" class="btn btn-control btn-restart" :disabled="serverStatus === 'offline' || loading" :class="{'btn-loading': loading}">
                                 <i class="bi bi-arrow-clockwise me-1"></i> Riavvia
                             </button>
                         </div>
+                    </div>
+                    <div class="logs-section">
                         <div class="server-logs" ref="logsContainer">
                             <pre class="mb-0">{{ serverLogs }}</pre>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@3.2.31/dist/vue.global.prod.js"></script>
